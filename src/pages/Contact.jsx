@@ -1,24 +1,20 @@
 import React, { useState } from "react";
-import { useEffect } from "react";
-import axios from "axios";
-
+import WalletConnectionProvider from '../components/WalletConnectionProvider';
+import { WalletMultiButton } from '@solana/wallet-adapter-react-ui';
+import SendUSDC from "../components/SendSol";
 function Contact() {
-  // const [product, setProduct] = useState([]);
-  // async function fetchData() {
-  //   const product = await axios.get("http://127.0.0.1:8000/api/products");
-  //   // console.log(product.data);
-  //   setProduct(product.data);
-  // }
-  // useEffect(() => {
-  //   fetchData();
-  // }, []);
+  
   return (
     <>
-      {/* {product.map((item) => (
-        <h2 key={item.id}>{item.name}</h2>
-      ))} */}
-      {/* <h2>{product.length > 0 && product[0].name}</h2>
-      <h2>{product.length > 0 && product[1].name}</h2> */}
+      {/* <WalletConnectionProvider>
+      <div style={{ display: 'flex', justifyContent: 'center', marginTop: '50px' }}>
+        <WalletMultiButton />
+      </div>
+    </WalletConnectionProvider> */}
+
+    <WalletConnectionProvider>
+      <SendUSDC />
+    </WalletConnectionProvider>
     </>
   );
 }

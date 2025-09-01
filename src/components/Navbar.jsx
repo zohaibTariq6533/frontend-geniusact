@@ -1,6 +1,7 @@
 import React from "react";
-import {Link} from 'react-router-dom';
-
+import { Link } from 'react-router-dom';
+import WalletConnectionProvider from './WalletConnectionProvider';
+import { WalletMultiButton } from '@solana/wallet-adapter-react-ui';
 function Navbar() {
   return (
     <>
@@ -9,7 +10,7 @@ function Navbar() {
         <div className="flex flex-col items-start mt-3">
           <Link
             to="/"
-            className="text-3xl font-extrabold tracking-normal text-gray-900 "
+            className=" text-2xl md:text-3xl font-extrabold tracking-normal text-gray-900 "
           >
             Genius Act
           </Link>
@@ -24,13 +25,14 @@ function Navbar() {
         </div>
 
         {/* Right Section: Contact Us Button */}
-        <div className="flex items-center">
-          <Link
-            to="contact-us"
-            className="text-sm font-medium text-gray-700 px-4 py-2 rounded-full border border-gray-200 transition-all duration-200 hover:bg-gray-50 hover:text-gray-900 hover:border-gray-300"
-          >
-            Contact us
-          </Link>
+        <div className="flex items-center justify-center min-h-screen">
+          <div>
+            <WalletConnectionProvider>
+              <div className="flex justify-center">
+                <WalletMultiButton />
+              </div>
+            </WalletConnectionProvider>
+          </div>
         </div>
       </header>
     </>

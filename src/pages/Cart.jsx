@@ -5,6 +5,10 @@ import { InfoIcon, ClockIcon } from "lucide-react";
 import CardCheckout from "../components/CardCheckout";
 import shorts from '../assets/shorts.webp';
 import tank from '../assets/tank.webp';
+import logos from '../assets/logos.png'
+import { Link } from 'react-router-dom';
+import SendUSDC from "../components/SendSol";
+import WalletConnectionProvider from '../components/WalletConnectionProvider';
 
 import {
   CreditCard,
@@ -12,6 +16,10 @@ import {
   Bitcoin,
   Trash2,
 } from "lucide-react";
+
+function noti() {
+  const alrt = alert('Under Development');
+}
 
 function CartItem({ product, onQuantityChange, onRemoveItem }) {
   return (
@@ -122,6 +130,8 @@ export default function CartPage() {
   const totalItems = useMemo(() => {
     return cartItems.reduce((sum, item) => sum + item.quantity, 0);
   }, [cartItems]);
+  const newsubtotal = subtotal.toFixed(2);
+  const subtTotalDiscounted = newsubtotal - ((newsubtotal / 100) * 2);
 
   return (
     <div className="min-h-screen bg-gray-50 p-6 md:p-8 font-sans">
@@ -142,7 +152,7 @@ export default function CartPage() {
           ))}
         </div>
         {/* Right Column: Order Summary */}
-        <div className="lg:col-span-1 h-fit lg:mt-10">
+        <div className="lg:col-span-1 h-fit ">
           <div className="bg-white p-8 rounded-xl shadow-lg">
             <h2 className="text-2xl font-bold text-gray-900 mb-6">
               Order Summary
@@ -154,21 +164,28 @@ export default function CartPage() {
                   {totalItems}
                 </span>
               </div>
-              <div className="pt-4 border-t border-gray-100 flex justify-between text-xl font-bold text-gray-900">
+              <div className="pt-2 border-t border-gray-100 flex justify-between text-xl font-bold text-gray-900">
                 <span>Estimated Total</span>
-                <span>${subtotal.toFixed(2)}</span>
+                <span>${newsubtotal}</span>
               </div>
-              <button
+              <div className=" border-t border-gray-100 flex justify-between text-md  text-gray-700">
+                <span>Pay with USDC(2% off):</span>
+                <span>${subtTotalDiscounted}</span>
+              </div>
+              {/* <button
                 className="w-full mt-6 py-4 bg-gradient-to-r from-purple-600 to-pink-600 text-white font-bold rounded-xl transition-all duration-300 hover:from-purple-700 hover:to-pink-700 flex items-center justify-center gap-3 shadow-lg focus:outline-none focus:ring-4 focus:ring-purple-300 focus:ring-offset-2 transform hover:-translate-y-1"
                 aria-label="Proceed to Crypto Checkout"
               >
                 <Bitcoin className="h-5 w-5" />
-                <span>Crypto Checkout</span>
-              </button>
+                <span >Crypto Checkout</span>
+              </button> */}
+              <WalletConnectionProvider>
+                <SendUSDC subtotal={subtotal} newsubtotal={subtTotalDiscounted} />
+              </WalletConnectionProvider>
             </div>
           </div>
-          <div className="flex flex-col items-center justify-center mt-6 space-y-4">
-            <h4 className="text-gray-700 font-medium">Or pay with</h4>
+          <div className="flex flex-col items-center justify-center mt-2 space-y-2">
+            <h4 className="text-gray-700 text-sm">Or pay with</h4>
             <div className="flex gap-4">
               {/* Card Payment */}
               {/* <button
@@ -179,12 +196,23 @@ export default function CartPage() {
                 <CreditCard className="h-5 w-5" />
                 Card Pay
               </button> */}
-              <CardCheckout subtotal={subtotal} totalItems={totalItems}/>
+              <CardCheckout subtotal={subtotal} totalItems={totalItems} />
 
               {/* PayPal Payment */}
               <PayPalCheckout subtotal={subtotal} />
             </div>
             {/* <div id="paypal-container" ></div> */}
+            <div className="flex flex-col justify-center items-center mt-2 opacity-79">
+              <p className="font-semibold">Powered By</p>
+              <div className="flex space-x-3 mt-1 ">
+                <i className="fa-brands fa-stripe text-[28px]"></i>
+                <i className="fa-brands fa-paypal text-[28px]"></i>
+                <i className="fa-brands fa-btc text-[28px]"></i>
+                <i className="fa-brands fa-expeditedssl text-[28px]"></i>
+
+              </div>
+            </div>
+
           </div>
         </div>
       </div>
