@@ -5,6 +5,8 @@ import Cart from "./pages/Cart";
 import Contact from "./pages/Contact";
 import Success from "./components/Success";
 import Cancel from "./components/Cancel";
+import { Buffer } from "buffer";
+window.Buffer = Buffer;
 
 function App() {
   return (

@@ -8,7 +8,13 @@ export default defineConfig({
   plugins: [
     react(),
     tailwindcss(),
-    
-
   ],
+  resolve: {
+    alias: {
+      buffer: 'buffer',  // polyfill Buffer
+    },
+  },
+  define: {
+    'process.env': {}, // avoids process undefined errors
+  },
 })
