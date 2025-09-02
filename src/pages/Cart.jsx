@@ -5,6 +5,9 @@ import { InfoIcon, ClockIcon } from "lucide-react";
 import CardCheckout from "../components/CardCheckout";
 import shorts from '../assets/shorts.webp';
 import tank from '../assets/tank.webp';
+import usdc from '../assets/usdc.png'
+import payapl from '../assets/paypal.png'
+import stripe from '../assets/stripe.png'
 import logos from '../assets/logos.png'
 import { Link } from 'react-router-dom';
 import SendUSDC from "../components/SendSol";
@@ -202,14 +205,12 @@ export default function CartPage() {
               <PayPalCheckout subtotal={subtotal} />
             </div>
             {/* <div id="paypal-container" ></div> */}
-            <div className="flex flex-col justify-center items-center mt-2 opacity-79">
+            <div className="flex flex-col justify-center items-center mt-2 ">
               <p className="font-semibold">Powered By</p>
               <div className="flex space-x-3 mt-1 ">
-                <i className="fa-brands fa-stripe text-[28px]"></i>
-                <i className="fa-brands fa-paypal text-[28px]"></i>
-                <i className="fa-brands fa-btc text-[28px]"></i>
-                <i className="fa-brands fa-expeditedssl text-[28px]"></i>
-
+                <img src={stripe} alt="Stripe" className="h-6  my-1" />
+                <img src={payapl} alt="PayPal" className="h-8" />
+                <img src={usdc} alt="USDC" className="h-8" />
               </div>
             </div>
 
