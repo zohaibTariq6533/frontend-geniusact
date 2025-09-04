@@ -1,1 +1,33 @@
 @import "tailwindcss";
+/* https://grabient.com/HQDgzAbANKDssxCBwCMAWATDADATjBlRG2FnETBROxyk2B1kPWE1RyA?style=linearGradient&steps=22&angle=90 */
+
+.hero-section{
+    /* background: linear-gradient(to right, #ffffff 0%, #e6f0ff 100%); */
+    font-family: 'Poppins', sans-serif;
+}
+/* From Uiverse.io by alexmaracinaru */ 
+.cta::before {
+  content: "";
+  position: absolute;
+  inset: 0; /* fill full button */
+  border-radius: 9999px;
+  background: linear-gradient(90deg, #bae6fd 0%, #e9d5ff 100%);
+  width: 45px; /* initial small width */
+  height: 100%; /* full button height */
+  transition: all 0.3s ease;
+  z-index: 0;
+}
+
+.cta:hover::before {
+  width: 100%;
+}
+
+.cta:hover svg {
+  transform: translateX(0);
+}
+.banner-text{
+  
+}
+.font-montserrat{
+font-family: 'Montserrat', sans-serif;
+}
