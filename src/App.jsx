@@ -7,6 +7,8 @@ import Contact from "./pages/Contact";
 import Success from "./components/Success";
 import Cancel from "./components/Cancel";
 import { Buffer } from "buffer";
+
+import '@fortawesome/fontawesome-free/css/all.min.css';
 window.Buffer = Buffer;
 
 function App() {

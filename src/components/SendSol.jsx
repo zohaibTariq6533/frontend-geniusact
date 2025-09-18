@@ -73,6 +73,7 @@ const SendUSDC = ({ subtotal,newsubtotal }) => {
       const signature = await sendTransaction(transaction, connection);
 
       alert('✅ USDC Transaction sent! Signature:' + signature);
+      console.log(signature);
       setShowPopup(false);
     } catch (err) {
       console.error(err);

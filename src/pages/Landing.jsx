@@ -1,16 +1,20 @@
 import React from 'react'
-import Cart from '../assets/cart-ss.png'
+import Cart from '../assets/cart-ss1.png'
+import Usdc from '../assets/usdc-banner.png'
 import { Wallet, CreditCard, TrendingUp } from "lucide-react"
 import { Link } from 'react-router-dom'
+import TrustedBusinesses from '../components/TrustedBusinesses '
+import PaymentDemo from '../components/PaymentDemo'
+import CallToAction from '../components/CallToAction'
 
 function Landing() {
 	return (
 		<>
 			<div className="hero-section h-[90vh] flex items-center justify-between px-12">
 				{/* Left Section */}
-				<div className="left w-3/5 flex flex-col justify-center space-y-6">
-					<h1 className="text-4xl font-bold text-gray-900 leading-tight">
-						Save up to <span className="bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent text-5xl">3%</span> on every transaction with  <span className="bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent text-5xl">Stablecoin Payments</span>
+				<div className="left w-2/6 flex flex-col justify-center space-y-6">
+					<h1 className="text-3xl font-bold text-gray-900 leading-tight">
+						Save up to <span className="bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent text-4xl">3%</span> on every transaction with  <span className="bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent text-4xl">Stablecoin Payments</span>
 					</h1>
 					<p className="text-lg text-gray-600 max-w-lg">
 						Accept payments in USDC and crypto wallets directly on your website. No middlemen. No hidden fees. Just faster, cheaper, global payments.
@@ -38,19 +42,24 @@ function Landing() {
 					</div>
 				</div>
 
+				{/* Middle Image Section */}
+				<div className="middle w-2/6 relative flex justify-center items-center">
+					{/* Gradient Blob for middle section */}
+					
+					{/* Middle Image */}
+					<img src={Cart} className='w-full' alt="" />
+				</div>
+
 				{/* Right Section */}
-				<div className="right w-2/5 relative flex justify-center items-center">
+				<div className="right w-2/6 relative flex justify-end items-center h-full pr-0">
 					{/* Gradient Blob (only bottom-right area) */}
-					<div className="absolute w-[350px] h-[350px] bg-gradient-to-br from-purple-600/70 to-pink-600/70 rounded-full blur-3xl bottom-[-10px] right-[-10px]"></div>
+					{/* <div className="absolute w-[400px] h-[400px] bg-blue-500 bottom-[-10px] right-[-10px]"></div> */}
 
 					{/* Image */}
-					<img
-						src={Cart}
+					<img 
+						src={Usdc}
 						alt="Hero Illustration"
-						className="relative z-10 max-w-md rounded-2xl"
-						style={{
-							boxShadow: "-12px -12px 24px rgba(0,0,0,0.15)" // shadow to top-left only
-						}}
+						className="relative z-10 h-[70vh] w-auto object-cover rounded-2xl mr-0"
 					/>
 
 				</div>
@@ -274,10 +283,13 @@ function Landing() {
 
 				</div>
 			</section>
-			<div className='w-full h-60 flex justify-center items-center'>
-				<p className='text-xl font-montserrat font-bold'>Under Developement</p>
-			</div>
+			{/* Demo Section */}
+			<PaymentDemo />
+			<TrustedBusinesses />
+			<CallToAction />
+			
 
+			
 
 		</>
 	)
