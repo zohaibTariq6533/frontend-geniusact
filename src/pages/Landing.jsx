@@ -10,11 +10,11 @@ import CallToAction from '../components/CallToAction'
 function Landing() {
 	return (
 		<>
-			<div className="hero-section h-[90vh] flex items-center justify-between px-12">
+			<div className="hero-section h-[90vh] flex items-center justify-center	px-8">
 				{/* Left Section */}
-				<div className="left w-2/6 flex flex-col justify-center space-y-6">
-					<h1 className="text-3xl font-bold text-gray-900 leading-tight">
-						Save up to <span className="bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent text-4xl">3%</span> on every transaction with  <span className="bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent text-4xl">Stablecoin Payments</span>
+				<div className="left w-2/6 flex flex-col justify-center space-y-6 ">
+					<h1 className="text-5xl font-bold text-gray-900 leading-tight">
+						Save up to <span className="bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent text-5xl">3%</span> on every transaction with  <span className="bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent text-5xl">Stablecoin Payments</span>
 					</h1>
 					<p className="text-lg text-gray-600 max-w-lg">
 						Accept payments in USDC and crypto wallets directly on your website. No middlemen. No hidden fees. Just faster, cheaper, global payments.
@@ -43,23 +43,25 @@ function Landing() {
 				</div>
 
 				{/* Middle Image Section */}
-				<div className="middle w-2/6 relative flex justify-center items-center">
-					{/* Gradient Blob for middle section */}
-					
-					{/* Middle Image */}
-					<img src={Cart} className='w-full' alt="" />
+				<div className="middle w-2/6 relative flex justify-end items-center ">
+					<img
+						src={Cart}
+						alt=""
+						className="h-[75vh] w-2xs  object-fit rounded-2xl shadow-2xl"
+					/>
 				</div>
 
+
 				{/* Right Section */}
-				<div className="right w-2/6 relative flex justify-end items-center h-full pr-0">
+				<div className="right w-1/6 relative flex justify-end items-center h-full pr-0 ">
 					{/* Gradient Blob (only bottom-right area) */}
 					{/* <div className="absolute w-[400px] h-[400px] bg-blue-500 bottom-[-10px] right-[-10px]"></div> */}
 
 					{/* Image */}
-					<img 
+					<img
 						src={Usdc}
 						alt="Hero Illustration"
-						className="relative z-10 h-[70vh] w-auto object-cover rounded-2xl mr-0"
+						className="relative z-10 h-[70vh] w-auto object-none rounded-2xl mr-0 opacity-50"
 					/>
 
 				</div>
@@ -233,7 +235,7 @@ function Landing() {
 											</div>
 										</div>
 										<div className="mt-4 text-center">
-											
+
 											<span className="text-sm font-semibold text-gray-700">Genius Act</span>
 										</div>
 									</div>
@@ -246,7 +248,7 @@ function Landing() {
 											</div>
 										</div>
 										<div className="mt-4 text-center">
-											
+
 											<span className="text-sm font-semibold text-gray-700">Stripe</span>
 										</div>
 									</div>
@@ -260,13 +262,13 @@ function Landing() {
 											</div>
 										</div>
 										<div className="mt-4 text-center">
-											
+
 											<span className="text-sm font-semibold text-gray-700">PayPal</span>
 										</div>
 									</div>
 
 									{/* Genius Act */}
-									
+
 								</div>
 
 								{/* Savings Indicator */}
@@ -287,9 +289,9 @@ function Landing() {
 			<PaymentDemo />
 			<TrustedBusinesses />
 			<CallToAction />
-			
 
-			
+
+
 
 		</>
 	)

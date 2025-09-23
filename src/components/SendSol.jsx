@@ -1,6 +1,8 @@
 import React, { useState } from "react";
+import { useMemo } from "react";
 import { useConnection, useWallet } from "@solana/wallet-adapter-react";
 import { Transaction, PublicKey } from "@solana/web3.js";
+import { useNavigate } from "react-router-dom";
 import {
   getOrCreateAssociatedTokenAccount,
   createTransferInstruction,
@@ -11,12 +13,24 @@ import { Bitcoin } from "lucide-react";
 const SendUSDC = ({ subtotal,newsubtotal }) => {
   const { connection } = useConnection();
   const { publicKey, sendTransaction } = useWallet();
+  const navigate = useNavigate();
 
   const receiver = "J11tBfQo3swcdHMPAbMf7ZSVoXQgQCxM1quBxNkNM1ps";
   const amount = subtotal / 100;
 
   const [status, setStatus] = useState("");
   const [showPopup, setShowPopup] = useState(false);
+
+  const orderCode = useMemo(() => generateOrderCode(), []); // ✅ stays same after re-render
+  
+      function generateOrderCode(length = 8) {
+          const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+          let result = "";
+          for (let i = 0; i < length; i++) {
+              result += chars.charAt(Math.floor(Math.random() * chars.length));
+          }
+          return result;
+      }
 
   const walletCheck = async () => {
     if (!publicKey) {
@@ -71,8 +85,9 @@ const SendUSDC = ({ subtotal,newsubtotal }) => {
       );
 
       const signature = await sendTransaction(transaction, connection);
-
-      alert('✅ USDC Transaction sent! Signature:' + signature);
+      const order= orderCode;
+      const success=true;
+      navigate(`/thank-you?signature=${signature}` , { state: {amount,success,order } });
       console.log(signature);
       setShowPopup(false);
     } catch (err) {

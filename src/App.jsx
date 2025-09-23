@@ -7,6 +7,7 @@ import Contact from "./pages/Contact";
 import Success from "./components/Success";
 import Cancel from "./components/Cancel";
 import { Buffer } from "buffer";
+import ThankYou from "./components/cryptoThankYou";
 
 import '@fortawesome/fontawesome-free/css/all.min.css';
 window.Buffer = Buffer;
@@ -23,6 +24,7 @@ function App() {
           <Route path="/contact-us" element={<Contact />} />
           <Route path="/success" element={<Success />} />
           <Route path="/cancel" element={<Cancel />} />
+          <Route path="/thank-you" element={<ThankYou />} />
         </Routes>
       </Router>
     </>
