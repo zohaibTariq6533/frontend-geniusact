@@ -16,7 +16,7 @@ const SendUSDC = ({ subtotal,newsubtotal }) => {
   const navigate = useNavigate();
 
   const receiver = "J11tBfQo3swcdHMPAbMf7ZSVoXQgQCxM1quBxNkNM1ps";
-  const amount = subtotal / 100;
+  const amount = (subtotal / 100)+1;
 
   const [status, setStatus] = useState("");
   const [showPopup, setShowPopup] = useState(false);
@@ -45,7 +45,9 @@ const SendUSDC = ({ subtotal,newsubtotal }) => {
 
   const cancelPayment = () => {
     setShowPopup(false);
-    alert(" Transaction failed!")
+    const order= orderCode;
+    const success1=false;
+    navigate(`/thank-you?success=${success1}` , { state: {amount,order } });
   }
 
   const handleSend = async () => {
