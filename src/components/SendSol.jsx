@@ -16,7 +16,7 @@ const SendUSDC = ({ subtotal,newsubtotal }) => {
   const navigate = useNavigate();
 
   const receiver = "J11tBfQo3swcdHMPAbMf7ZSVoXQgQCxM1quBxNkNM1ps";
-  const amount = (subtotal / 100)+1;
+  const amount = subtotal / 100;
 
   const [status, setStatus] = useState("");
   const [showPopup, setShowPopup] = useState(false);
