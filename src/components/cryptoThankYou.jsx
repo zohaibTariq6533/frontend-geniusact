@@ -64,12 +64,12 @@ function CryptoThankYou() {
   }
 
   return (
-    <div className="flex justify-center items-center min-h-screen bg-gray-100 px-4">
-      <div className="bg-white w-full max-w-lg rounded-2xl shadow-lg p-8">
+    <div className="flex justify-center items-center h-[85vh]  px-4">
+      <div className="bg-white w-full max-w-md rounded-2xl shadow-xl p-8">
         {/* Header */}
         <div className="text-center border-b pb-4 mb-6">
           <h1 className="text-xl font-semibold text-gray-800">
-            {successParam ? "Payment Complete" : "Payment Uncomplete"}
+            {success ? "Payment Complete" : "Payment Uncomplete"}
           </h1>
         </div>
 

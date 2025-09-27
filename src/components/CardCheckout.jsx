@@ -29,7 +29,7 @@ function CardCheckout({ subtotal }) {
       <button
         onClick={handleCheckout}
         disabled={loading}
-        className="px-8 py-3 bg-gradient-to-r from-blue-500 to-indigo-600 text-white font-semibold rounded-xl 
+        className="px-5 md:px-6 lg:px-8  py-3 bg-gradient-to-r from-blue-500 to-indigo-600 text-white font-semibold rounded-sm 
                  shadow-lg transition-colors duration-300 flex items-center gap-3 focus:outline-none 
                  focus:ring-4 focus:ring-blue-400 focus:ring-offset-2 hover:from-blue-700 hover:to-indigo-800"
       >

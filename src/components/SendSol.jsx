@@ -10,7 +10,8 @@ import {
 } from "@solana/spl-token";
 import { Bitcoin } from "lucide-react";
 
-const SendUSDC = ({ subtotal,newsubtotal }) => {
+const SendUSDC = ({ subtotal, newsubtotal }) => {
+  const [loading, setLoading] = useState(false);
   const { connection } = useConnection();
   const { publicKey, sendTransaction } = useWallet();
   const navigate = useNavigate();
@@ -22,15 +23,15 @@ const SendUSDC = ({ subtotal,newsubtotal }) => {
   const [showPopup, setShowPopup] = useState(false);
 
   const orderCode = useMemo(() => generateOrderCode(), []); // ✅ stays same after re-render
-  
-      function generateOrderCode(length = 8) {
-          const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-          let result = "";
-          for (let i = 0; i < length; i++) {
-              result += chars.charAt(Math.floor(Math.random() * chars.length));
-          }
-          return result;
-      }
+
+  function generateOrderCode(length = 8) {
+    const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+    let result = "";
+    for (let i = 0; i < length; i++) {
+      result += chars.charAt(Math.floor(Math.random() * chars.length));
+    }
+    return result;
+  }
 
   const walletCheck = async () => {
     if (!publicKey) {
@@ -45,58 +46,62 @@ const SendUSDC = ({ subtotal,newsubtotal }) => {
 
   const cancelPayment = () => {
     setShowPopup(false);
-    const order= orderCode;
-    const success1=false;
-    navigate(`/thank-you?success=${success1}` , { state: {amount,order } });
+    const order = orderCode;
+    const success1 = false;
+    navigate(`/thank-you?success=${success1}`, { state: { amount, order } });
   }
 
   const handleSend = async () => {
+  setLoading(true); // disable button while processing
 
+  try {
+    const USDC_MINT = new PublicKey(
+      "4zMMC9srt5Ri5X14GAgXhaHii3GnPAEERYPJgZJDncDU" // devnet
+    );
+    const toPubkey = new PublicKey(receiver);
 
-    try {
-      const USDC_MINT = new PublicKey(
-        "4zMMC9srt5Ri5X14GAgXhaHii3GnPAEERYPJgZJDncDU" // devnet
-      );
-      const toPubkey = new PublicKey(receiver);
+    const fromTokenAccount = await getOrCreateAssociatedTokenAccount(
+      connection,
+      publicKey,
+      USDC_MINT,
+      publicKey
+    );
 
-      const fromTokenAccount = await getOrCreateAssociatedTokenAccount(
-        connection,
+    const toTokenAccount = await getOrCreateAssociatedTokenAccount(
+      connection,
+      publicKey,
+      USDC_MINT,
+      toPubkey
+    );
+
+    const amountInUSDC = Math.round(parseFloat(amount) * 1e6);
+
+    const transaction = new Transaction().add(
+      createTransferInstruction(
+        fromTokenAccount.address,
+        toTokenAccount.address,
         publicKey,
-        USDC_MINT,
-        publicKey
-      );
+        amountInUSDC,
+        [],
+        TOKEN_PROGRAM_ID
+      )
+    );
 
-      const toTokenAccount = await getOrCreateAssociatedTokenAccount(
-        connection,
-        publicKey,
-        USDC_MINT,
-        toPubkey
-      );
+    const signature = await sendTransaction(transaction, connection);
+    const order = orderCode;
+    const success = true;
 
-      const amountInUSDC = Math.round(parseFloat(amount) * 1e6);
+    navigate(`/thank-you?signature=${signature}`, { state: { amount, success, order } });
+    console.log(signature);
+    setShowPopup(false);
+  } catch (err) {
+    console.error(err);
+    cancelPayment();
+  } finally {
+    setLoading(false); // re-enable button after finish
+  }
+};
 
-      const transaction = new Transaction().add(
-        createTransferInstruction(
-          fromTokenAccount.address,
-          toTokenAccount.address,
-          publicKey,
-          amountInUSDC,
-          [],
-          TOKEN_PROGRAM_ID
-        )
-      );
-
-      const signature = await sendTransaction(transaction, connection);
-      const order= orderCode;
-      const success=true;
-      navigate(`/thank-you?signature=${signature}` , { state: {amount,success,order } });
-      console.log(signature);
-      setShowPopup(false);
-    } catch (err) {
-      console.error(err);
-      cancelPayment();
-    }
-  };
 
   return (
     <>
@@ -112,7 +117,7 @@ const SendUSDC = ({ subtotal,newsubtotal }) => {
       {/* {status && alert(status)} */}
 
       {showPopup && (
-        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 backdrop-blur-sm">
+        <div className="fixed inset-0 flex items-center justify-center bg-black/70 backdrop-blur-sm">
           <div className="bg-white rounded-2xl p-6 shadow-2xl w-96 transform transition-all scale-100 hover:scale-[1.02]">
             <h3 className="text-xl font-bold mb-4 text-gray-800 text-center">
               Confirm Transaction
@@ -140,9 +145,14 @@ const SendUSDC = ({ subtotal,newsubtotal }) => {
               </button>
               <button
                 onClick={handleSend}
-                className="px-5 py-2 rounded-xl text-white font-semibold shadow-md bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 transition-all transform hover:-translate-y-0.5"
+                disabled={loading}
+                className={`px-5 py-2 rounded-xl text-white font-semibold shadow-md 
+    bg-gradient-to-r from-purple-600 to-pink-600 
+    hover:from-purple-700 hover:to-pink-700 
+    transition-all transform hover:-translate-y-0.5
+    ${loading ? "opacity-50 cursor-not-allowed" : ""}`}
               >
-                Confirm
+                {loading ? "Processing..." : "Confirm"}
               </button>
             </div>
           </div>

@@ -1,6 +1,6 @@
 import React from 'react'
 import Cart from '../assets/cart-ss1.png'
-import Usdc from '../assets/usdc-banner.png'
+import Usdc from '../assets/usdc-banner3-1.png'
 import { Wallet, CreditCard, TrendingUp } from "lucide-react"
 import { Link } from 'react-router-dom'
 import TrustedBusinesses from '../components/TrustedBusinesses '
@@ -10,61 +10,65 @@ import CallToAction from '../components/CallToAction'
 function Landing() {
 	return (
 		<>
-			<div className="hero-section h-[90vh] flex items-center justify-center	px-8">
+			<div className="hero-section h-[90vh] flex  justify-end ">
 				{/* Left Section */}
-				<div className="left w-2/6 flex flex-col justify-center space-y-6 ">
-					<h1 className="text-5xl font-bold text-gray-900 leading-tight">
-						Save up to <span className="bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent text-5xl">3%</span> on every transaction with  <span className="bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent text-5xl">Stablecoin Payments</span>
-					</h1>
-					<p className="text-lg text-gray-600 max-w-lg">
-						Accept payments in USDC and crypto wallets directly on your website. No middlemen. No hidden fees. Just faster, cheaper, global payments.
-					</p>
-					<div className="flex space-x-4">
-						<div className="flex gap-4">
-							{/* Fancy CTA Button */}
-							<Link to='/cart' className="cta relative px-5 py-3 font-ubuntu font-bold text-lg tracking-wide text-[#234567] flex items-center rounded-full transition-all duration-200 ease-in-out active:scale-95">
-								<span className="relative z-10">Enable Crypto Payments Today</span>
-								<svg
-									width="15px"
-									height="10px"
-									viewBox="0 0 13 10"
-									className="relative ml-2 stroke-[#234567] stroke-2 transition-transform duration-300 ease-in-out -translate-x-1"
-								>
-									<path d="M1,5 L11,5"></path>
-									<polyline points="8 1 12 5 8 9"></polyline>
-								</svg>
-							</Link>
+				<div className='   flex items-center justify-center  w-[90%] '>
+					<div className="left w-[45%]  flex flex-col justify-center h-full mr-4">
+						<h1 className="text-[4rem] 2xl:text-[6rem] font-bold text-gray-900 leading-tight">
+							Save up to <span className="bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent ">3%</span>  with  <span className="bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent ">Stablecoin Payments</span>
+						</h1>
+						<p className="text-lg text-gray-600 max-w-lg">
+							Accept payments in USDC and crypto wallets directly on your website. No middlemen. No hidden fees. Just faster, cheaper, global payments.
+						</p>
+						<div className="flex space-x-4">
+							<div className="flex gap-4">
+								{/* Fancy CTA Button */}
+								<Link to='/cart' className="cta relative px-5 py-3 font-ubuntu font-bold text-lg tracking-wide text-[#234567] flex items-center rounded-full transition-all duration-200 ease-in-out active:scale-95">
+									<span className="relative z-10">Enable Crypto Payments Today</span>
+									<svg
+										width="15px"
+										height="10px"
+										viewBox="0 0 13 10"
+										className="relative ml-2 stroke-[#234567] stroke-2 transition-transform duration-300 ease-in-out -translate-x-1"
+									>
+										<path d="M1,5 L11,5"></path>
+										<polyline points="8 1 12 5 8 9"></polyline>
+									</svg>
+								</Link>
 
-							{/* Secondary Button */}
+								{/* Secondary Button */}
+
+							</div>
 
 						</div>
+					</div>
+
+					{/* Middle Image Section */}
+					<div className=" w-[25%] 2xl:w-[20%] relative flex  items-center">
+						<img
+							src={Cart}
+							alt=""
+							className="h-[32rem] 2xl:h-[42rem]  object-fit rounded-4xl"
+							style={{ boxShadow: "0px 0px 30px rgba(0,0,0,0.2)" }}
+						/>
+					</div>
+
+
+					{/* Right Section */}
+					<div className=" w-[25%] relative flex justify-end h-full items-center h-full pr-0 ">
+						{/* Gradient Blob (only bottom-right area) */}
+						{/* <div className="absolute w-[400px] h-[400px] bg-blue-500 bottom-[-10px] right-[-10px]"></div> */}
+
+						{/* Image */}
+						<img
+							src={Usdc}
+							alt="Hero Illustration"
+							className="relative z-10 h-[50%] object-cover  rounded-2xl mr-0 opacity-50"
+						/>
 
 					</div>
 				</div>
 
-				{/* Middle Image Section */}
-				<div className="middle w-2/6 relative flex justify-end items-center ">
-					<img
-						src={Cart}
-						alt=""
-						className="h-[75vh] w-2xs  object-fit rounded-2xl shadow-2xl"
-					/>
-				</div>
-
-
-				{/* Right Section */}
-				<div className="right w-1/6 relative flex justify-end items-center h-full pr-0 ">
-					{/* Gradient Blob (only bottom-right area) */}
-					{/* <div className="absolute w-[400px] h-[400px] bg-blue-500 bottom-[-10px] right-[-10px]"></div> */}
-
-					{/* Image */}
-					<img
-						src={Usdc}
-						alt="Hero Illustration"
-						className="relative z-10 h-[70vh] w-auto object-none rounded-2xl mr-0 opacity-50"
-					/>
-
-				</div>
 
 			</div>
 
