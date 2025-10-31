@@ -8,6 +8,7 @@ import Success from "./components/Success";
 import Cancel from "./components/Cancel";
 import { Buffer } from "buffer";
 import ThankYou from "./components/cryptoThankYou";
+import CryptoWalletSetup from "./components/CryptoWalletSetup";
 
 import '@fortawesome/fontawesome-free/css/all.min.css';
 window.Buffer = Buffer;
@@ -15,7 +16,7 @@ window.Buffer = Buffer;
 function App() {
   return (
     <>
-      <Router basename="/ecommerce">
+      <Router >
         <Navbar />
 
         <Routes>
@@ -25,6 +26,7 @@ function App() {
           <Route path="/success" element={<Success />} />
           <Route path="/cancel" element={<Cancel />} />
           <Route path="/thank-you" element={<ThankYou />} />
+          <Route path="crypto-wallet-setup-guide" element={<CryptoWalletSetup/>}/>
         </Routes>
       </Router>
     </>

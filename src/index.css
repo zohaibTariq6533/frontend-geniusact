@@ -25,9 +25,45 @@
 .cta:hover svg {
   transform: translateX(0);
 }
-.banner-text{
-  
-}
 .font-montserrat{
 font-family: 'Montserrat', sans-serif;
+}
+
+/* From Uiverse.io by CristianMontoya98 */ 
+.btn1 {
+ width: auto;
+ height: 2.3em;
+ margin: 0.5em;
+ background: linear-gradient(90deg, #a1d9f7 0%, #c2acda 100%);
+ color: rgb(53, 52, 52);
+ border: none;
+ border-radius: 2rem;
+ font-weight: 500;
+ cursor: pointer;
+ position: relative;
+ z-index: 1;
+ overflow: hidden;
+}
+
+.btn1:hover {
+ color: black;
+}
+
+.btn1:after {
+ content: "";
+ background: white;
+ position: absolute;
+ z-index: -1;
+ left: -20%;
+ right: -20%;
+ top: 0;
+ bottom: 0;
+ transform: skewX(-45deg) scale(0, 1);
+ transition: all 0.5s;
+}
+
+.btn1:hover:after {
+ transform: skewX(-45deg) scale(1, 1);
+ -webkit-transition: all 0.25s;
+ transition: all 0.25s;
 }

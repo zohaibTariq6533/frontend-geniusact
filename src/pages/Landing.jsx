@@ -6,8 +6,14 @@ import { Link } from 'react-router-dom'
 import TrustedBusinesses from '../components/TrustedBusinesses '
 import PaymentDemo from '../components/PaymentDemo'
 import CallToAction from '../components/CallToAction'
+import VideoModal from '../components/VideoModal'
+import { useState } from 'react'
 
 function Landing() {
+	const [isOpen, setOpen] = useState(false);
+
+	// Your specific Google Drive embed URL
+	const driveEmbedUrl = "https://drive.google.com/file/d/1740Fm6y0vjyNuFpgdWzSc4rzp-dB2YZk/preview";
 	return (
 		<>
 			<div className="hero-section h-[90vh] flex  justify-center md:justify-end ">
@@ -20,11 +26,10 @@ function Landing() {
 						<p className="text-lg text-gray-600 max-w-lg">
 							Accept payments in USDC and crypto wallets directly on your website. No middlemen. No hidden fees. Just faster, cheaper, global payments.
 						</p>
-						<div className="flex space-x-4">
-							<div className="flex gap-4">
-								{/* Fancy CTA Button */}
-								<Link to='/cart' className="cta relative px-5 py-3 font-ubuntu font-bold text-lg tracking-wide text-[#234567] flex items-center rounded-full transition-all duration-200 ease-in-out active:scale-95">
-									<span className="relative z-10 text-[0.8rem] md:text-base">Enable Crypto Payments Today</span>
+						<div className="flex justify-center lg:justify-start space-x-4">
+							<div className="flex flex-col">
+								
+								<Link to='/cart' class="btn1 text-base md:text-xl  flex justify-center shadow-2xl items-center px-4 py-5"> <span>Enable Crypto Payments</span>
 									<svg
 										width="15px"
 										height="10px"
@@ -35,6 +40,18 @@ function Landing() {
 										<polyline points="8 1 12 5 8 9"></polyline>
 									</svg>
 								</Link>
+								<div className="space-y-1  px-2  border-t border-gray-200 ">
+									
+									<Link
+										to="/crypto-wallet-setup-guide" // Replace with your actual checkout link
+										className="w-full flex items-center justify-center py-2 border border-purple-600  md:text-lg font-medium rounded-full shadow-md hover:text-white text-gray-600 hover:bg-[linear-gradient(90deg,#a1d9f7_0%,#c2acda_100%)] bg-white transition-all duration-300"
+									>
+										See setup guide
+									</Link>
+									<p className=" text-sm text-center text-gray-400">
+										First time paying with crypto?
+									</p>
+								</div>
 
 								{/* Secondary Button */}
 
@@ -55,7 +72,7 @@ function Landing() {
 
 
 					{/* Right Section */}
-					<div className="hidden w-[25%] relative lg:flex justify-end h-full items-center h-full pr-0 ">
+					<div className="hidden w-[25%] relative lg:flex justify-end items-center h-full pr-0 ">
 						{/* Gradient Blob (only bottom-right area) */}
 						{/* <div className="absolute w-[400px] h-[400px] bg-blue-500 bottom-[-10px] right-[-10px]"></div> */}
 
@@ -75,15 +92,35 @@ function Landing() {
 			<div className="bg-gradient-to-b from-background to-muted py-8 px-6">
 				<div className="max-w-6xl mx-auto">
 					{/* Section Header */}
-					<div className="text-center mb-20">
+					<div className="text-center mb-20 flex flex-col items-center justify-center">
 						<h2 className="text-4xl md:text-5xl font-extrabold bg-gradient-to-r from-black via-gray-800 to-gray-600 bg-clip-text text-transparent tracking-tight">
 							How It Works
 						</h2>
-						<div className="w-24 h-1 bg-gradient-to-r from-purple-500 to-pink-500 mx-auto rounded-full mt-4 mb-2"></div>
-						<p className="text-lg text-orange-600 max-w-2xl mx-auto">
+						<div className="w-24 h-1 bg-gradient-to-r from-purple-500 to-pink-500 mx-auto rounded-full mt-2 mb-1"></div>
+						<p className="text-xs text-orange-600 max-w-2xl mx-auto">
 							Save up to 3.5% in fees
 						</p>
+						<div className='mt-2'>
+							<Link onClick={() => setOpen(true)} className="cta relative px-5 py-3 font-ubuntu font-bold text-lg tracking-wide text-[#234567] flex items-center rounded-full transition-all duration-200 ease-in-out active:scale-95">
+								<span className="relative z-10 text-[0.8rem] md:text-base">Watch video demo of crypto payment</span>
+								<svg
+									width="15px"
+									height="10px"
+									viewBox="0 0 13 10"
+									className="relative ml-2 stroke-[#234567] stroke-2 transition-transform duration-300 ease-in-out -translate-x-1"
+								>
+									<path d="M1,5 L11,5"></path>
+									<polyline points="8 1 12 5 8 9"></polyline>
+								</svg>
+							</Link>
+						</div>
 					</div>
+					<VideoModal
+						isOpen={isOpen}
+						onClose={() => setOpen(false)}
+						embedUrl={driveEmbedUrl}
+					/>
+
 
 					{/* Steps with arrows */}
 					<div className="flex flex-col md:flex-row items-center justify-between gap-12 md:gap-6 xl:gap-12 relative">
@@ -190,7 +227,7 @@ function Landing() {
 
 					</div>
 				</div>
-			</div>
+			</div >
 
 			<div className="w-full h-42  flex items-center justify-center  bg-gradient-to-r from-gray-900 via-slate-700 to-black">
 				<h2 className='text-xl md:text-4xl px-4 text-center font-extrabold text-white font-montserrat'>Tired of paying high transaction fees?</h2>
