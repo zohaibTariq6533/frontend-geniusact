@@ -1,6 +1,7 @@
 import React from 'react';
+import demoVideo from '../assets/geniusAct.mp4'
 
-const VideoModal = ({ isOpen, onClose, embedUrl }) => {
+const VideoModal = ({ isOpen, onClose }) => {
   if (!isOpen) {
     return null;
   }
@@ -26,13 +27,14 @@ const VideoModal = ({ isOpen, onClose, embedUrl }) => {
 
         {/* Video Embed Container (16:9 aspect ratio) */}
         <div className="relative pt-[56.25%]"> {/* pt-[56.25%] ensures 16:9 ratio */}
-          <iframe
+          <video
             className="absolute top-0 left-0 w-full h-full rounded-lg"
-            src={embedUrl}
+            src={demoVideo}
             title="Embedded Video"
-            allow="autoplay; encrypted-media; fullscreen"
+            autoPlay
+            controls
             allowFullScreen
-          ></iframe>
+          ></video>
         </div>
       </div>
     </div>

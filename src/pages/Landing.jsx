@@ -9,11 +9,9 @@ import CallToAction from '../components/CallToAction'
 import VideoModal from '../components/VideoModal'
 import { useState } from 'react'
 
+
 function Landing() {
 	const [isOpen, setOpen] = useState(false);
-
-	// Your specific Google Drive embed URL
-	const driveEmbedUrl = "https://drive.google.com/file/d/1740Fm6y0vjyNuFpgdWzSc4rzp-dB2YZk/preview";
 	return (
 		<>
 			<div className="hero-section h-[90vh] flex  justify-center md:justify-end ">
@@ -28,7 +26,7 @@ function Landing() {
 						</p>
 						<div className="flex justify-center lg:justify-start space-x-4">
 							<div className="flex flex-col">
-								
+
 								<Link to='/cart' class="btn1 text-base md:text-xl  flex justify-center shadow-2xl items-center px-4 py-5"> <span>Enable Crypto Payments</span>
 									<svg
 										width="15px"
@@ -41,7 +39,7 @@ function Landing() {
 									</svg>
 								</Link>
 								<div className="space-y-1  px-2  border-t border-gray-200 ">
-									
+
 									<Link
 										to="/crypto-wallet-setup-guide" // Replace with your actual checkout link
 										className="w-full flex items-center justify-center py-2 border border-purple-600  md:text-lg font-medium rounded-full shadow-md hover:text-white text-gray-600 hover:bg-[linear-gradient(90deg,#a1d9f7_0%,#c2acda_100%)] bg-white transition-all duration-300"
@@ -118,7 +116,6 @@ function Landing() {
 					<VideoModal
 						isOpen={isOpen}
 						onClose={() => setOpen(false)}
-						embedUrl={driveEmbedUrl}
 					/>
 
 
