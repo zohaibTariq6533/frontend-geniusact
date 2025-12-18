@@ -1,19 +1,36 @@
 @import "tailwindcss";
-/* https://grabient.com/HQDgzAbANKDssxCBwCMAWATDADATjBlRG2FnETBROxyk2B1kPWE1RyA?style=linearGradient&steps=22&angle=90 */
 
-.hero-section{
-    /* background: linear-gradient(to right, #ffffff 0%, #e6f0ff 100%); */
-    font-family: 'Poppins', sans-serif;
+@theme {
+  --font-poppins: 'Poppins', sans-serif;
+  --font-inter: 'Inter', sans-serif;
 }
-/* From Uiverse.io by alexmaracinaru */ 
+
+body {
+  font-family: 'Inter';
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: 'Poppins';
+}
+
+/* https://grabient.com/HQDgzAbANKDssxCBwCMAWATDADATjBlRG2FnETBROxyk2B1kPWE1RyA?style=linearGradient&steps=22&angle=90 */
+/* From Uiverse.io by alexmaracinaru */
 .cta::before {
   content: "";
   position: absolute;
-  inset: 0; /* fill full button */
+  inset: 0;
+  /* fill full button */
   border-radius: 9999px;
   background: linear-gradient(90deg, #bae6fd 0%, #e9d5ff 100%);
-  width: 45px; /* initial small width */
-  height: 100%; /* full button height */
+  width: 45px;
+  /* initial small width */
+  height: 100%;
+  /* full button height */
   transition: all 0.3s ease;
   z-index: 0;
 }
@@ -25,45 +42,46 @@
 .cta:hover svg {
   transform: translateX(0);
 }
-.font-montserrat{
-font-family: 'Montserrat', sans-serif;
+
+.font-montserrat {
+  font-family: 'Montserrat', sans-serif;
 }
 
-/* From Uiverse.io by CristianMontoya98 */ 
+/* From Uiverse.io by CristianMontoya98 */
 .btn1 {
- width: auto;
- height: 2.3em;
- margin: 0.5em;
- background: linear-gradient(90deg, #a1d9f7 0%, #c2acda 100%);
- color: rgb(53, 52, 52);
- border: none;
- border-radius: 2rem;
- font-weight: 500;
- cursor: pointer;
- position: relative;
- z-index: 1;
- overflow: hidden;
+  width: auto;
+  height: 2.3em;
+  margin: 0.5em;
+  background: linear-gradient(90deg, #a1d9f7 0%, #c2acda 100%);
+  color: rgb(53, 52, 52);
+  border: none;
+  border-radius: 2rem;
+  font-weight: 500;
+  cursor: pointer;
+  position: relative;
+  z-index: 1;
+  overflow: hidden;
 }
 
 .btn1:hover {
- color: black;
+  color: black;
 }
 
 .btn1:after {
- content: "";
- background: white;
- position: absolute;
- z-index: -1;
- left: -20%;
- right: -20%;
- top: 0;
- bottom: 0;
- transform: skewX(-45deg) scale(0, 1);
- transition: all 0.5s;
+  content: "";
+  background: white;
+  position: absolute;
+  z-index: -1;
+  left: -20%;
+  right: -20%;
+  top: 0;
+  bottom: 0;
+  transform: skewX(-45deg) scale(0, 1);
+  transition: all 0.5s;
 }
 
 .btn1:hover:after {
- transform: skewX(-45deg) scale(1, 1);
- -webkit-transition: all 0.25s;
- transition: all 0.25s;
+  transform: skewX(-45deg) scale(1, 1);
+  -webkit-transition: all 0.25s;
+  transition: all 0.25s;
 }

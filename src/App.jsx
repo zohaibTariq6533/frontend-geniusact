@@ -3,6 +3,7 @@ import Navbar from "./components/Navbar";
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 import Cart from "./pages/Cart";
 import Landing from "./pages/Landing";
+import Dashboard from "./pages/Dashboard";
 import Contact from "./pages/Contact";
 import Success from "./components/Success";
 import Cancel from "./components/Cancel";
@@ -21,6 +22,7 @@ function App() {
 
         <Routes>
           <Route path="/" element={<Landing />} />
+          <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/cart" element={<Cart />} />
           <Route path="/contact-us" element={<Contact />} />
           <Route path="/success" element={<Success />} />

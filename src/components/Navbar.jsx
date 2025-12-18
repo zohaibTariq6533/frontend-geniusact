@@ -5,12 +5,12 @@ import { WalletMultiButton } from '@solana/wallet-adapter-react-ui';
 function Navbar() {
   return (
     <>
-      <header className="flex h-24 w-full items-center justify-between px-8 bg-white text-gray-800 border-b border-gray-100 shadow-md">
+      <header className="flex items-center sticky top-0 z-100 justify-between px-6 py-3 max-w-6xl mx-auto bg-white text-gray-800 rounded-b-2xl">
         {/* Left Section: Logo and Slogan */}
         <div className="flex flex-col items-start mt-3">
           <Link
             to="/"
-            className=" text-2xl md:text-3xl font-extrabold tracking-normal text-gray-900 "
+            className=" text-xl md:text-3xl font-extrabold tracking-normal text-gray-900 "
           >
             Genius Act
           </Link>
@@ -18,14 +18,14 @@ function Navbar() {
         </div>
 
         {/* Center Section: Main Title */}
-        <div className="flex-1 text-center hidden md:block">
+        {/* <div className="flex-1 text-center hidden md:block">
           <h1 className="text-2xl md:text-3xl font-bold text-gray-800 tracking-tight">
             Crypto Payments for Businesses
           </h1>
-        </div>
+        </div> */}
 
         {/* Right Section: Contact Us Button */}
-        <div className="flex items-center justify-center min-h-screen">
+        <div className="flex items-center justify-center">
           <div>
             <WalletConnectionProvider>
               <div className="flex justify-center">
@@ -35,6 +35,7 @@ function Navbar() {
           </div>
         </div>
       </header>
+
     </>
   );
 }
