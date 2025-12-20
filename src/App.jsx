@@ -21,8 +21,8 @@ function App() {
         <Navbar />
 
         <Routes>
-          <Route path="/" element={<Landing />} />
-          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/old" element={<Landing />} />
+          <Route path="/" element={<Dashboard />} />
           <Route path="/cart" element={<Cart />} />
           <Route path="/contact-us" element={<Contact />} />
           <Route path="/success" element={<Success />} />

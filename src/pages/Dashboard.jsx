@@ -2,8 +2,12 @@ import React, { useEffect, useRef, useState } from 'react';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPaypal } from "@fortawesome/free-brands-svg-icons";
 import { faCreditCard } from "@fortawesome/free-solid-svg-icons";
-import handPhone from '../assets/hand-phone-removebg-preview.png';
+import handPhone from '../assets/handPhone.png';
 import dotedAnimation from '../assets/videos/doted_animation.mp4';
+import cryptoVideo from '../assets/videos/crypto.mp4';
+import howItWorksVideo from '../assets/videos/how_it_works.mp4';
+import paymentStripeVideo from '../assets/videos/payment_stripe.mp4';
+import paypalVideo from '../assets/videos/paypal.mp4';
 import {
   ChevronRight,
   Check,
@@ -692,7 +696,7 @@ const GeniusActPage = () => {
               {/* Video Content Area */}
               <div className="relative group cursor-pointer bg-gray-900">
 
-                <video src="src\assets\videos\how_it_works.mp4" alt="Video preview of checkout process"
+                <video src={howItWorksVideo} alt="Video preview of checkout process"
                   className="w-full h-auto object-cover opacity-60 hover:opacity-80 transition-all duration-300" controls ></video>
 
               </div>
@@ -725,7 +729,7 @@ const GeniusActPage = () => {
             zIndex={0}
             title="Crypto Checkout"
             description="Accept USDC and other major stablecoins with instant, low fee settlement."
-            videoSrc="src/assets/videos/crypto.mp4"
+            videoSrc={cryptoVideo}
             features={[
               { bold: "Instant Settlement", text: "For USDC and top stablecoins" },
               { bold: "Low processing fees", text: "compared to cards" },
@@ -741,7 +745,7 @@ const GeniusActPage = () => {
             title="Card Pay"
             titleSuffix="(Stripe)"
             description="Secure credit and debit card processing for global customers."
-            videoSrc="src/assets/videos/payment_stripe.mp4"
+            videoSrc={paymentStripeVideo}
             features={[
               { bold: "Support all major credit & debit cards", text: "(Visa, Mastercard, Amex & more)" },
               { bold: "Instant authorization", text: "with intelligent fraud screening" },
@@ -756,7 +760,7 @@ const GeniusActPage = () => {
             zIndex={20}
             title="Pay with PayPal"
             description="Instant payments using your customer's trusted PayPal accounts."
-            videoSrc="src/assets/videos/paypal.mp4"
+            videoSrc={paypalVideo}
             features={[
               { bold: "Instant payment confirmation", text: "from verified PayPal accounts" },
               { bold: "One-tap login", text: "with no card entry needed" },

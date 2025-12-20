@@ -34,6 +34,7 @@ const VideoModal = ({ isOpen, onClose }) => {
             autoPlay
             controls
             allowFullScreen
+            muted
           ></video>
         </div>
       </div>
