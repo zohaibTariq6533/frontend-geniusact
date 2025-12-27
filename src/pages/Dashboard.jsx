@@ -421,7 +421,7 @@ const FooterSection = () => {
       {/* Full Width Video Background Container */}
       <div className="absolute top-0 left-0 w-full h-[400px] sm:h-[500px] md:h-[600px] z-0 pointer-events-none">
         <video
-          className="w-full h-full object-cover opacity-50"
+          className="w-full h-full object-cover opacity-80"
           autoPlay
           loop
           muted
@@ -530,27 +530,20 @@ const GeniusActPage = () => {
     <div className="w-full bg-white font-sans text-slate-900">
 
       {/* ===== HERO SECTION ===== */}
-      <section className="relative min-h-[100vh] sm:min-h-screen bg-white overflow-hidden">
-        {/* Video Background - Positioned lower on mobile */}
-        <div className="absolute top-0 left-0 w-full h-[85%] sm:h-full z-0">
-          {/* Mobile: top offset, Desktop: centered */}
-          <div className="relative w-full h-full">
-            <video
-              className="w-full h-full object-cover object-center pointer-events-none"
-              autoPlay
-              loop
-              muted
-              playsInline
-              style={{
-                // On mobile, shift the video down
-                objectPosition: 'center 60%'
-              }}
-            >
-              <source src={dotedAnimation} type="video/mp4" />
-            </video>
-            <div className="absolute top-0 left-0 w-full h-full bg-white/90 z-0 pointer-events-none"></div>
-          </div>
-        </div>
+<section className="relative min-h-[90vh] sm:min-h-screen bg-white overflow-hidden">
+  {/* Video Background - Reduced height */}
+  <div className="absolute top-0 left-0 w-full h-[70%] sm:h-full z-0">
+    <video
+      className="w-full h-full object-cover object-center pointer-events-none"
+      autoPlay
+      loop
+      muted
+      playsInline
+    >
+      <source src={dotedAnimation} type="video/mp4" />
+    </video>
+    <div className="absolute top-0 left-0 w-full h-full bg-white/90 z-0 pointer-events-none"></div>
+  </div>
 
         <div className="relative z-10 h-full">
           {/* Hero Content */}
