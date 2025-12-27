@@ -422,7 +422,7 @@ const FooterSection = () => {
       {/* Full Width Video Background Container */}
       <div className="absolute top-0 left-0 w-full h-[400px] sm:h-[500px] md:h-[600px] z-0 pointer-events-none">
         <video
-          className="w-full h-full object-cover opacity-50"
+          className="w-full h-full object-cover opacity-80"
           autoPlay
           loop
           muted
@@ -543,7 +543,7 @@ const GeniusActPage = () => {
     >
       <source src={dotedAnimation} type="video/mp4" />
     </video>
-    <div className="absolute top-0 left-0 w-full h-full bg-white/90 z-0 pointer-events-none"></div>
+    <div className="absolute top-0 left-0 w-full h-full bg-white/75 z-0 pointer-events-none"></div>
   </div>
 
   <div className="relative z-10 h-full">
