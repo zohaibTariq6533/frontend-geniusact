@@ -542,7 +542,7 @@ const GeniusActPage = () => {
     >
       <source src={dotedAnimation} type="video/mp4" />
     </video>
-    <div className="absolute top-0 left-0 w-full h-full bg-white/90 z-0 pointer-events-none"></div>
+    <div className="absolute top-0 left-0 w-full h-full bg-white/70 z-0 pointer-events-none"></div>
   </div>
 
         <div className="relative z-10 h-full">
