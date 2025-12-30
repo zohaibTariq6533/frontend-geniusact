@@ -14,8 +14,9 @@ export default function PayPalCheckout({ subtotal }) {
 
     const script = document.createElement("script");
     script.src =
-      "https://www.paypal.com/sdk/js?client-id=YOUR_CLIENT_ID&currency=USD&disable-funding=card,paylater";
+      "https://www.paypal.com/sdk/js?client-id=ASefc0qBJ-8A-nq-nUFqG2EmaH5ct5Jnh2vlOliR_iNlZGFybxmRgf-MAOIpO1gdU_3oaiK1NSLcMZEK&currency=USD&disable-funding=card,paylater";
     script.async = true;
+    script.defer = true;
     script.onload = () => setIsSdkLoaded(true);
     script.onerror = () => console.error("Failed to load PayPal SDK");
     document.body.appendChild(script);

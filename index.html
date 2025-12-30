@@ -7,18 +7,39 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <!-- Google Fonts - Async loading to prevent render blocking -->
   <link
+    rel="preload"
     href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
-    rel="stylesheet">
+    as="style"
+    onload="this.onload=null;this.rel='stylesheet'">
+  <noscript>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+      rel="stylesheet">
+  </noscript>
+  <link
+    rel="preload"
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap"
+    as="style"
+    onload="this.onload=null;this.rel='stylesheet'">
+  <noscript>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet">
+  </noscript>
+  <link
+    rel="preload"
+    href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap"
+    as="style"
+    onload="this.onload=null;this.rel='stylesheet'">
+  <noscript>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  </noscript>
     <!-- <link
   href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet"/> -->
-
-
-  <script
-    src="https://www.paypal.com/sdk/js?client-id=ASefc0qBJ-8A-nq-nUFqG2EmaH5ct5Jnh2vlOliR_iNlZGFybxmRgf-MAOIpO1gdU_3oaiK1NSLcMZEK&currency=USD&disable-funding=card,paylater"></script>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" />
+  <!-- Preload critical LCP resources - discoverable in initial HTML -->
+  <link rel="preload" as="image" href="/src/assets/handPhone.webp" fetchpriority="high">
+  <link rel="preload" as="image" href="/src/assets/dotedanimation.webp" fetchpriority="high">
+  <link rel="preload" as="video" href="/src/assets/videos/doted_animation.mp4" fetchpriority="high">
   <title>Genius Act - Future of Payments</title>
 </head>
 

@@ -1,13 +1,35 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPaypal } from "@fortawesome/free-brands-svg-icons";
-import { faCreditCard } from "@fortawesome/free-solid-svg-icons";
-import handPhone from '../assets/handPhone.png';
+import handPhone from '../assets/handPhone.webp';
 import dotedAnimation from '../assets/videos/doted_animation.mp4';
-import cryptoVideo from '../assets/videos/crypto.mp4';
-import howItWorksVideo from '../assets/videos/how_it_works.mp4';
-import paymentStripeVideo from '../assets/videos/payment_stripe.mp4';
-import paypalVideo from '../assets/videos/paypal.mp4';
+import dotedanimation from '../assets/dotedanimation.webp';
+
+import { Link } from 'react-router-dom'
+
+// Lazy load non-critical videos and icons - only import when needed
+let cryptoVideo, howItWorksVideo, paymentStripeVideo, paypalVideo, handPhonePoster;
+let BelowFoldIcons = null;
+
+const loadBelowFoldAssets = async () => {
+  if (!cryptoVideo) {
+    const [crypto, howItWorks, stripe, paypal, poster, icons] = await Promise.all([
+      import('../assets/videos/crypto.mp4'),
+      import('../assets/videos/how_it_works.mp4'),
+      import('../assets/videos/payment_stripe.mp4'),
+      import('../assets/videos/paypal.mp4'),
+      import('../assets/how.webp'),
+      import('lucide-react')
+    ]);
+    cryptoVideo = crypto.default;
+    howItWorksVideo = howItWorks.default;
+    paymentStripeVideo = stripe.default;
+    paypalVideo = paypal.default;
+    handPhonePoster = poster.default;
+    BelowFoldIcons = icons;
+  }
+  return { cryptoVideo, howItWorksVideo, paymentStripeVideo, paypalVideo, handPhonePoster, BelowFoldIcons };
+};
 import {
   ChevronRight,
   Check,
@@ -31,8 +53,6 @@ import {
   Award,
   Play
 } from 'lucide-react';
-import { Link } from 'react-router-dom'
-
 /**
  * WaveAnimation Component for the hero section
  */
@@ -242,13 +262,20 @@ const ProductFeatureRow = ({
         const [entry] = entries;
         if (entry.isIntersecting) {
           setIsInView(true);
-          if (videoRef.current) videoRef.current.play().catch(e => console.log('Autoplay prevented', e));
+          // Load video when near viewport, play when visible
+          if (videoRef.current) {
+            videoRef.current.load();
+            videoRef.current.play().catch(e => console.log('Autoplay prevented', e));
+          }
         } else {
           setIsInView(false);
           if (videoRef.current) videoRef.current.pause();
         }
       },
-      { threshold: 0.25 }
+      { 
+        threshold: 0.25,
+        rootMargin: '100px' // Start loading 100px before entering viewport
+      }
     );
 
     if (containerRef.current) observer.observe(containerRef.current);
@@ -426,6 +453,8 @@ const FooterSection = () => {
           loop
           muted
           playsInline
+          preload="none"
+          loading="lazy"
         >
           <source src={dotedAnimation} type="video/mp4" />
         </video>
@@ -486,10 +515,61 @@ const FooterSection = () => {
  * Main Page Component
  */
 const GeniusActPage = () => {
-
+  const [belowFoldLoaded, setBelowFoldLoaded] = useState(false);
+  const heroVideoRef = useRef(null);
   const videoRef = useRef(null);
+  const howItWorksVideoRef = useRef(null);
+  const [isHowItWorksPlaying, setIsHowItWorksPlaying] = useState(false);
   const sectionRef = useRef(null);
   const [isInView, setIsInView] = useState(false);
+
+  // Optimize hero video playback - start playing immediately
+  useEffect(() => {
+    if (heroVideoRef.current) {
+      const video = heroVideoRef.current;
+      
+      // Force play as soon as possible
+      const tryPlay = () => {
+        if (video.readyState >= 2) { // HAVE_CURRENT_DATA
+          video.play().catch(() => {});
+        }
+      };
+      
+      // Try to play immediately if video is already loaded
+      tryPlay();
+      
+      // Also try on various events
+      video.addEventListener('loadedmetadata', tryPlay);
+      video.addEventListener('loadeddata', tryPlay);
+      video.addEventListener('canplay', tryPlay);
+      video.addEventListener('canplaythrough', tryPlay);
+      
+      return () => {
+        video.removeEventListener('loadedmetadata', tryPlay);
+        video.removeEventListener('loadeddata', tryPlay);
+        video.removeEventListener('canplay', tryPlay);
+        video.removeEventListener('canplaythrough', tryPlay);
+      };
+    }
+  }, []);
+
+  // Defer loading below-the-fold assets until after initial render
+  useEffect(() => {
+    const loadAssets = async () => {
+      if (window.requestIdleCallback) {
+        window.requestIdleCallback(async () => {
+          await loadBelowFoldAssets();
+          setBelowFoldLoaded(true);
+        }, { timeout: 2000 });
+      } else {
+        setTimeout(async () => {
+          await loadBelowFoldAssets();
+          setBelowFoldLoaded(true);
+        }, 100);
+      }
+    };
+    loadAssets();
+  }, []);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -499,7 +579,7 @@ const GeniusActPage = () => {
           setIsInView(true);
           // Play video when section is visible
           if (videoRef.current) {
-            videoRef.current.play();
+            videoRef.current.play().catch(() => {}); // Silently handle autoplay errors
           }
         } else {
           setIsInView(false);
@@ -510,7 +590,8 @@ const GeniusActPage = () => {
         }
       },
       {
-        threshold: 0.25, // Trigger when 25% of the section is visible
+        threshold: 0.1, // Trigger earlier (10% visible) for faster perceived load
+        rootMargin: '50px' // Start loading slightly before entering viewport
       }
     );
 
@@ -533,12 +614,44 @@ const GeniusActPage = () => {
 <section className="relative min-h-[90vh] sm:min-h-screen bg-white overflow-hidden">
   {/* Video Background - Reduced height */}
   <div className="absolute top-0 left-0 w-full h-[70%] sm:h-full z-0">
+    {/* Poster image shown immediately while video loads */}
+    <img 
+      src={dotedanimation} 
+      alt="" 
+      className="w-full h-full object-cover object-center pointer-events-none absolute inset-0"
+      fetchPriority="high"
+      aria-hidden="true"
+    />
     <video
+      ref={heroVideoRef}
       className="w-full h-full object-cover object-center pointer-events-none"
       autoPlay
       loop
       muted
       playsInline
+      preload="auto"
+      fetchPriority="high"
+      poster={dotedanimation}
+      onLoadedMetadata={(e) => {
+        // Start playing as soon as metadata is available
+        e.target.play().catch(() => {});
+      }}
+      onCanPlay={(e) => {
+        // Hide poster when video can start playing
+        const posterImg = e.target.previousElementSibling;
+        if (posterImg && posterImg.tagName === 'IMG') {
+          posterImg.style.display = 'none';
+        }
+        // Ensure video is playing
+        e.target.play().catch(() => {});
+      }}
+      onPlaying={(e) => {
+        // Hide poster once video is actually playing
+        const posterImg = e.target.previousElementSibling;
+        if (posterImg && posterImg.tagName === 'IMG') {
+          posterImg.style.display = 'none';
+        }
+      }}
     >
       <source src={dotedAnimation} type="video/mp4" />
     </video>
@@ -623,11 +736,17 @@ const GeniusActPage = () => {
               {/* Gray Background Card */}
               <div className="absolute bg-[#f5f5f5] rounded-xl w-[90%] sm:w-[90%] h-[120%] sm:h-[135%] -z-10 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 shadow-sm"></div>
 
-              {/* Phone Image */}
+              {/* Phone Image - LCP Element */}
+              {/* TODO: Optimize handPhone.png - Current size: 129 KiB, Potential savings: 57.4 KiB (44% reduction)
+                   Use tools like ImageOptim, Squoosh, or build-time optimization to compress the image */}
               <img
                 src={handPhone}
                 alt="Stats"
+                fetchPriority="high"
+                width="600"
+                height="800"
                 className="w-[80%] sm:w-[80%] md:w-auto h-auto scale-122 md:scale-100 lg:scale-110 xl:scale-125 drop-shadow-2xl relative z-10 mt-4 sm:mt-8 md:-mt-24"
+                decoding="async"
               />
             </div>
 
@@ -671,131 +790,168 @@ const GeniusActPage = () => {
         </div>
       </section>
 
-      {/* ===== HOW IT WORKS SECTION ===== */}
-      <section className="bg-[#f7f7f7] py-16 sm:py-20 md:py-24 px-3 sm:px-4 lg:px-8 overflow-hidden">
-        <div className="max-w-6xl mx-auto">
+      {/* Below-the-fold sections - lazy loaded to improve FCP */}
+      {belowFoldLoaded && (
+        <>
+          {/* ===== HOW IT WORKS SECTION ===== */}
+          <section className="bg-[#f7f7f7] py-16 sm:py-20 md:py-24 px-3 sm:px-4 lg:px-8 overflow-hidden">
+            <div className="max-w-6xl mx-auto">
 
-          {/* --- Header Section --- */}
-          <div className="flex flex-col items-center text-center mb-12 sm:mb-16 md:mb-20 space-y-4 sm:space-y-6">
-            {/* Top Pill */}
-            <span className="inline-block bg-gray-200/80 rounded-full px-4 sm:px-5 py-1 sm:py-1.5 text-xs sm:text-sm font-semibold text-gray-600 tracking-wide">
-              Process
-            </span>
+              {/* --- Header Section --- */}
+              <div className="flex flex-col items-center text-center mb-12 sm:mb-16 md:mb-20 space-y-4 sm:space-y-6">
+                {/* Top Pill */}
+                <span className="inline-block bg-gray-200/80 rounded-full px-4 sm:px-5 py-1 sm:py-1.5 text-xs sm:text-sm font-semibold text-gray-600 tracking-wide">
+                  Process
+                </span>
 
-            {/* Main Heading */}
-            <h2 className="text-2xl sm:text-3xl md:text-4xl font-medium text-gray-900 tracking-tight">
-              How It Works
-            </h2>
+                {/* Main Heading */}
+                <h2 className="text-2xl sm:text-3xl md:text-4xl font-medium text-gray-900 tracking-tight">
+                  How It Works
+                </h2>
 
-            {/* Discount Pill */}
-            <span className="inline-block bg-red-100 rounded-full px-4 sm:px-5 py-1 sm:py-1.5 text-xs sm:text-sm font-medium text-red-500 tracking-wide">
-              Save up to 3.5% in fees!
-            </span>
-          </div>
+                {/* Discount Pill */}
+                <span className="inline-block bg-red-100 rounded-full px-4 sm:px-5 py-1 sm:py-1.5 text-xs sm:text-sm font-medium text-red-500 tracking-wide">
+                  Save up to 3.5% in fees!
+                </span>
+              </div>
 
-          {/* --- Steps Cards Section --- */}
-          <div className="relative mb-12 sm:mb-16 md:mb-10">
-            {/* Arrows Background Layer */}
-            <ConnectingArrows />
+              {/* --- Steps Cards Section --- */}
+              <div className="relative mb-12 sm:mb-16 md:mb-10">
+                {/* Arrows Background Layer */}
+                <ConnectingArrows />
 
-            {/* Cards Container: Centered on mobile, full width on desktop */}
-            <div className="flex justify-center md:block">
-              <div className="w-[90%] md:w-full">
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8 md:gap-6 relative z-20">
-                  {stepsData.map((step) => (
-                    <StepCard key={step.id} {...step} />
-                  ))}
+                {/* Cards Container: Centered on mobile, full width on desktop */}
+                <div className="flex justify-center md:block">
+                  <div className="w-[90%] md:w-full">
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8 md:gap-6 relative z-20">
+                      {stepsData.map((step) => (
+                        <StepCard key={step.id} {...step} />
+                      ))}
+                    </div>
+                  </div>
                 </div>
               </div>
+
+              {/* --- Video Placeholder Section --- */}
+              <div className="relative max-w-6xl mx-auto">
+                {/* Browser Mockup Container */}
+                <div className="bg-gray-900 rounded-xl sm:rounded-[2rem] overflow-hidden shadow-2xl border border-gray-800/50">
+
+                  {/* Video Content Area */}
+                  <div className="relative group cursor-pointer bg-gray-900">
+                    <video 
+                      ref={howItWorksVideoRef}
+                      src={howItWorksVideo} 
+                      alt="Video preview of checkout process"
+                      className="w-full h-auto object-cover opacity-60 hover:opacity-80 transition-all duration-300" 
+                      preload="none"
+                      poster={handPhonePoster}
+                      onPlay={() => setIsHowItWorksPlaying(true)}
+                      onPause={() => setIsHowItWorksPlaying(false)}
+                      onClick={() => {
+                        if (howItWorksVideoRef.current) {
+                          if (isHowItWorksPlaying) {
+                            howItWorksVideoRef.current.pause();
+                          } else {
+                            howItWorksVideoRef.current.play();
+                          }
+                        }
+                      }}
+                    ></video>
+
+                    {/* Custom Play Button Overlay */}
+                    {!isHowItWorksPlaying && (
+                      <div 
+                        className="absolute inset-0 flex items-center justify-center bg-black/30 hover:bg-black/40 transition-all duration-300 cursor-pointer z-10"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          if (howItWorksVideoRef.current) {
+                            howItWorksVideoRef.current.play();
+                          }
+                        }}
+                      >
+                        <div className="bg-white/90 hover:bg-white rounded-full p-4 sm:p-6 md:p-8 shadow-2xl transform hover:scale-110 transition-all duration-300">
+                          <Play className="w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 text-gray-900 ml-1" fill="currentColor" />
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </div>
+
             </div>
-          </div>
+          </section>
 
-          {/* --- Video Placeholder Section --- */}
-          <div className="relative max-w-6xl mx-auto">
-            {/* Browser Mockup Container */}
-            <div className="bg-gray-900 rounded-xl sm:rounded-[2rem] overflow-hidden shadow-2xl border border-gray-800/50">
 
-              {/* Video Content Area */}
-              <div className="relative group cursor-pointer bg-gray-900">
+          {/* Product modules */}
+          <section className="bg-white">
+            <div ref={sectionRef} className="py-12 sm:py-14 md:py-16 px-3 sm:px-4 md:px-8 lg:px-16 bg-[#ffffff]">
+              {/* --- Header Section --- */}
+              <div className="flex flex-col items-center text-center mb-4 sm:mb-5 space-y-2">
+                {/* Top Pill */}
+                <span className="inline-block bg-gray-200/80 rounded-full px-4 sm:px-5 font-poppins py-1 sm:py-1.5 text-xs sm:text-sm font-semibold text-gray-600 tracking-wide">
+                  See It in Action
+                </span>
 
-                <video src={howItWorksVideo} alt="Video preview of checkout process"
-                  className="w-full h-auto object-cover opacity-60 hover:opacity-80 transition-all duration-300" controls></video>
+                {/* Main Heading */}
+                <h2 className="text-2xl sm:text-3xl md:text-4xl font-medium text-gray-900 tracking-tight font-poppins px-4 sm:px-6">
+                  Product Modules
+                </h2>
 
               </div>
+
+              {/* Crypto */}
+              <ProductFeatureRow
+                zIndex={0}
+                title="Crypto Checkout"
+                description="Accept USDC and other major stablecoins with instant, low fee settlement."
+                videoSrc={cryptoVideo}
+                features={[
+                  { bold: "Instant Settlement", text: "For USDC and top stablecoins" },
+                  { bold: "Low processing fees", text: "compared to cards" },
+                  { bold: "Multi-Chain support", text: "for maximum flexibility" },
+                  { bold: "Built-in", text: "fraud prevention & compliance layers" },
+                  { bold: "Familiar checkout flow", text: "that requires no crypto expertise" }
+                ]}
+              />
+
+              {/* Cards */}
+              <ProductFeatureRow
+                zIndex={10}
+                title="Card Pay"
+                titleSuffix="(Stripe)"
+                description="Secure credit and debit card processing for global customers."
+                videoSrc={paymentStripeVideo}
+                features={[
+                  { bold: "Support all major credit & debit cards", text: "(Visa, Mastercard, Amex & more)" },
+                  { bold: "Instant authorization", text: "with intelligent fraud screening" },
+                  { bold: "PCI-compliant encryption", text: "to protect sensitive data" },
+                  { bold: "Chargeback protection", text: "& dispute management" },
+                  { bold: "Optimized for global payments", text: "with multi-currency support" }
+                ]}
+              />
+
+              {/* Paypal */}
+              <ProductFeatureRow
+                zIndex={20}
+                title="Pay with PayPal"
+                description="Instant payments using your customer's trusted PayPal accounts."
+                videoSrc={paypalVideo}
+                features={[
+                  { bold: "Instant payment confirmation", text: "from verified PayPal accounts" },
+                  { bold: "One-tap login", text: "with no card entry needed" },
+                  { bold: "Global reach", text: "with millions of active users" },
+                  { bold: "Encrypted, secure processing", text: "backed by PayPal's fraud protection" },
+                  { bold: "Seamless mobile and desktop", text: "experience" }
+                ]}
+              />
             </div>
-          </div>
+          </section>
 
-        </div>
-      </section>
-
-
-      {/* Product modules */}
-      <section className="bg-white">
-        <div ref={sectionRef} className="py-12 sm:py-14 md:py-16 px-3 sm:px-4 md:px-8 lg:px-16 bg-[#ffffff]">
-          {/* --- Header Section --- */}
-          <div className="flex flex-col items-center text-center mb-4 sm:mb-5 space-y-2">
-            {/* Top Pill */}
-            <span className="inline-block bg-gray-200/80 rounded-full px-4 sm:px-5 font-poppins py-1 sm:py-1.5 text-xs sm:text-sm font-semibold text-gray-600 tracking-wide">
-              See It in Action
-            </span>
-
-            {/* Main Heading */}
-            <h2 className="text-2xl sm:text-3xl md:text-4xl font-medium text-gray-900 tracking-tight font-poppins px-4 sm:px-6">
-              Product Modules
-            </h2>
-
-          </div>
-
-          {/* Crypto */}
-          <ProductFeatureRow
-            zIndex={0}
-            title="Crypto Checkout"
-            description="Accept USDC and other major stablecoins with instant, low fee settlement."
-            videoSrc={cryptoVideo}
-            features={[
-              { bold: "Instant Settlement", text: "For USDC and top stablecoins" },
-              { bold: "Low processing fees", text: "compared to cards" },
-              { bold: "Multi-Chain support", text: "for maximum flexibility" },
-              { bold: "Built-in", text: "fraud prevention & compliance layers" },
-              { bold: "Familiar checkout flow", text: "that requires no crypto expertise" }
-            ]}
-          />
-
-          {/* Cards */}
-          <ProductFeatureRow
-            zIndex={10}
-            title="Card Pay"
-            titleSuffix="(Stripe)"
-            description="Secure credit and debit card processing for global customers."
-            videoSrc={paymentStripeVideo}
-            features={[
-              { bold: "Support all major credit & debit cards", text: "(Visa, Mastercard, Amex & more)" },
-              { bold: "Instant authorization", text: "with intelligent fraud screening" },
-              { bold: "PCI-compliant encryption", text: "to protect sensitive data" },
-              { bold: "Chargeback protection", text: "& dispute management" },
-              { bold: "Optimized for global payments", text: "with multi-currency support" }
-            ]}
-          />
-
-          {/* Paypal */}
-          <ProductFeatureRow
-            zIndex={20}
-            title="Pay with PayPal"
-            description="Instant payments using your customer's trusted PayPal accounts."
-            videoSrc={paypalVideo}
-            features={[
-              { bold: "Instant payment confirmation", text: "from verified PayPal accounts" },
-              { bold: "One-tap login", text: "with no card entry needed" },
-              { bold: "Global reach", text: "with millions of active users" },
-              { bold: "Encrypted, secure processing", text: "backed by PayPal's fraud protection" },
-              { bold: "Seamless mobile and desktop", text: "experience" }
-            ]}
-          />
-        </div>
-      </section>
-
-      {/* ===== FEES COMPARISON SECTION ===== */}
-      <FeesComparison />
+          {/* ===== FEES COMPARISON SECTION ===== */}
+          <FeesComparison />
+        </>
+      )}
 
 
 
@@ -909,7 +1065,7 @@ const GeniusActPage = () => {
         </div>
       </section>
 
-      <FooterSection />
+      {belowFoldLoaded && <FooterSection />}
     </div>
   );
 };
