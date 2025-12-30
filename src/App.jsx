@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import Navbar from "./components/Navbar";
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 import Cart from "./pages/Cart";
-import Landing from "./pages/Landing";
+// import Landing from "./pages/Landing";
 import Dashboard from "./pages/Dashboard";
 import Contact from "./pages/Contact";
 import Success from "./components/Success";
@@ -21,7 +21,7 @@ function App() {
         <Navbar />
 
         <Routes>
-          <Route path="/old" element={<Landing />} />
+          {/* <Route path="/old" element={<Landing />} /> */}
           <Route path="/" element={<Dashboard />} />
           <Route path="/cart" element={<Cart />} />
           <Route path="/contact-us" element={<Contact />} />
