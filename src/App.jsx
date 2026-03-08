@@ -10,6 +10,7 @@ import Cancel from "./components/Cancel";
 import { Buffer } from "buffer";
 import ThankYou from "./components/cryptoThankYou";
 import CryptoWalletSetup from "./components/CryptoWalletSetup";
+import AgentChat from "./components/AgentChat";       // ← NEW
 
 import '@fortawesome/fontawesome-free/css/all.min.css';
 window.Buffer = Buffer;
@@ -17,7 +18,7 @@ window.Buffer = Buffer;
 function App() {
   return (
     <>
-      <Router >
+      <Router>
         <Navbar />
 
         <Routes>
@@ -28,8 +29,10 @@ function App() {
           <Route path="/success" element={<Success />} />
           <Route path="/cancel" element={<Cancel />} />
           <Route path="/thank-you" element={<ThankYou />} />
-          <Route path="crypto-wallet-setup-guide" element={<CryptoWalletSetup/>}/>
+          <Route path="crypto-wallet-setup-guide" element={<CryptoWalletSetup />} />
         </Routes>
+
+        <AgentChat />    {/* ← NEW — renders on every page, bottom-right corner */}
       </Router>
     </>
   );

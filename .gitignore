@@ -24,3 +24,9 @@ frontend-v2.zip
 *.njsproj
 *.sln
 *.sw?
+
+#
+.env
+
+#
+*priv*.md*
