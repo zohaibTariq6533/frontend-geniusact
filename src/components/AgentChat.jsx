@@ -167,7 +167,7 @@ export default function AgentChat() {
 
   const statusText = {
     connected:    "Online",
-    connecting:   "Connecting...",
+    connecting:   "GeniusAct AI is loading...",
     disconnected: "Offline",
     error:        "Connection error",
   }[status];

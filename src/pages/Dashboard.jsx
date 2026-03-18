@@ -451,7 +451,7 @@ const FooterSection = () => {
             </p>
 
             <div className="flex justify-center">
-              <Link to="/cart" className="bg-[#4b6bff] hover:bg-[#3d62ea] text-white text-sm sm:text-md px-4 sm:px-6 py-2 rounded-sm font-medium flex items-center gap-2 transition-all hover:scale-105 cursor-pointer">
+              <Link to="/contact-form" className="bg-[#4b6bff] hover:bg-[#3d62ea] text-white text-sm sm:text-md px-4 sm:px-6 py-2 rounded-sm font-medium flex items-center gap-2 transition-all hover:scale-105 cursor-pointer">
                 Get Started with Genius Act
                 <ChevronRight className="w-4 h-4" />
               </Link>
@@ -560,12 +560,19 @@ const GeniusActPage = () => {
               </h1>
 
               {/* CTA Buttons */}
-              <div className="flex flex-col items-center w-full mb-6 md:mb-8">
+              <div className="flex flex-col  items-center justify-center w-full mb-6 md:mb-8 gap-3">
                 <Link 
-                  to='/cart' 
-                  className="bg-[#4b6bff] hover:bg-[#3d62ea] text-white text-sm xs:text-base sm:text-lg px-4 sm:px-6 md:px-7 py-2.5 sm:py-3 md:py-4 rounded-lg font-medium flex items-center justify-center gap-2 transition-transform hover:scale-105 shadow-xl shadow-blue-100 w-full max-w-[280px] sm:max-w-xs sm:w-auto mb-3"
+                  to='/contact-form' 
+                  className="bg-[#4b6bff] hover:bg-[#3d62ea] text-white text-sm xs:text-base sm:text-lg py-2.5 sm:py-3 md:py-4 rounded-lg font-medium flex items-center justify-center gap-2 transition-transform hover:scale-105 shadow-xl shadow-blue-100 w-[240px] sm:w-[260px]"
                 >
                   Enable Crypto Payments
+                  <ChevronRight className="w-4 h-4 sm:w-5 sm:h-5" />
+                </Link>
+                <Link 
+                  to='/cart' 
+                  className="bg-transparent border border-2 border-gray-300 hover:border-[#4b6bff] text-gray-700 hover:text-[#4b6bff] text-sm xs:text-base sm:text-lg py-2.5 sm:py-3 rounded-lg font-medium flex items-center justify-center gap-2 transition-all hover:scale-105 w-[240px] sm:w-[260px]"
+                >
+                  Get Demo
                   <ChevronRight className="w-4 h-4 sm:w-5 sm:h-5" />
                 </Link>
 

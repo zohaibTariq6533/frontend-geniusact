@@ -11,8 +11,10 @@ import { Buffer } from "buffer";
 import ThankYou from "./components/cryptoThankYou";
 import CryptoWalletSetup from "./components/CryptoWalletSetup";
 import AgentChat from "./components/AgentChat";       // ← NEW
-
+import ContactForm from "./pages/ContactForm";
 import '@fortawesome/fontawesome-free/css/all.min.css';
+import Thanks from './pages/ThankYou'
+
 window.Buffer = Buffer;
 
 function App() {
@@ -28,8 +30,10 @@ function App() {
           <Route path="/contact-us" element={<Contact />} />
           <Route path="/success" element={<Success />} />
           <Route path="/cancel" element={<Cancel />} />
+          <Route path="/contact-form" element={<ContactForm />} />
           <Route path="/thank-you" element={<ThankYou />} />
           <Route path="crypto-wallet-setup-guide" element={<CryptoWalletSetup />} />
+          <Route path="/thanks" element={<Thanks/>}/>
         </Routes>
 
         <AgentChat />    {/* ← NEW — renders on every page, bottom-right corner */}

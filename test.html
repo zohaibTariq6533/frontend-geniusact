@@ -1,0 +1,299 @@
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Sofia+Sans:wght@400;500;600;700&display=swap');
+    .skio-group-content {
+        display: none;
+    }
+
+    skio-plan-picker,
+    .skio-plan-picker {
+        --skio-primary-color: #215B32 !important;
+        --skio-button-color: #215B32 !important;
+        --skio-border-radius: 12px !important;
+        margin-top: 15px;
+        display: block;
+        border: none !important;
+        border-radius: 0 !important;
+        overflow: visible !important;
+        background-color: transparent !important;
+    }
+
+    skio-plan-picker>div,
+    .skio-plan-picker>div {
+        box-shadow: none !important;
+    }
+
+    .skio-group-container {
+        background-color: #ffffff !important;
+        margin: 0 0 10px 0 !important;
+        border-radius: 22px !important;
+        border: 1px solid #bdddc4 !important;
+        overflow: hidden !important;
+        cursor: pointer;
+    }
+
+    .skio-group-container--selected {
+        background-color: #E9FAED !important;
+    }
+
+    .skio-group-container--selected .skio-radio {
+        fill: #215B32 !important;
+    }
+
+    .skio-group-container--selected svg circle:first-child {
+        stroke: #215B32 !important;
+    }
+
+    .skio-custom-header {
+        background-color: #215B32;
+        color: white;
+        padding: 10px 15px;
+        font-size: 14px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        width: 100%;
+        border-radius: 13px 13px 0 0;
+        box-sizing: border-box;
+    }
+
+    .custom-skio-benefits {
+        list-style: none;
+        padding: 0px 15px 8px 18px;
+        margin-top: -10px !important;
+        font-size: 14px;
+        color: #333;
+        letter-spacing: -.3px;
+        font-weight: 500;
+    }
+
+    .custom-skio-benefits svg {
+        width: 20px !important;
+        height: 20px !important;
+        flex-shrink: 0;
+        stroke: #215B32;
+    }
+
+    .custom-skio-benefits li {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 8px;
+        font-size: 16px !important;
+        font-family: 'Inter', sans-serif !important;
+        color: black !important;
+    }
+
+    .skio-group-topline {
+        padding-left: 9px;
+        font-weight: 600;
+        font-size: 17px !important;
+        font-family: 'Inter', sans-serif !important;
+        letter-spacing: -.3px;
+        color: black !important;
+    }
+
+    .skio-group-title {
+        font-weight: 600;
+        font-size: 21px;
+        letter-spacing: -.3px;
+        font-family: 'Sofia Sans', sans-serif !important;
+        color: black !important;
+    }
+
+    .skio-price {
+        font-family: 'Inter', sans-serif !important;
+        font-size: 18px !important;
+    }
+
+    .skio-save {
+        padding: 0px !important;
+    }
+
+    @media (max-width: 767px) {
+        .skio-price {
+            font-size: 14px !important;
+            max-width: 100px;
+            padding: 4px 0 !important;
+            min-height: auto !important;
+        }
+        .skio-group-title {
+            font-size: 17px !important;
+            max-width: 85%;
+            padding: 8px 0;
+            min-height: 44px;
+        }
+        .custom-skio-benefits li {
+            font-size: 14px !important;
+        }
+    }
+
+    .skio-group-label {
+        padding: 10px 10px 10px 10px !important;
+    }
+
+    /* Top price discount styles */
+    .discounted-top-price {
+        font-family: 'Inter', sans-serif;
+        font-weight: 700;
+        color: #215B32;
+    }
+</style>
+
+<script>
+    const STATIC = {
+        'buy 1': {
+            compareAt: '$39.95',
+            subDaily: '$1.07/day',
+            otDaily: '$1.33/day',
+            discountedPrice: '$24.77'
+        },
+        'buy 2 get 1 free': {
+            compareAt: '$119.85',
+            subDaily: '$0.71/day',
+            otDaily: '$0.89/day',
+            discountedPrice: '$49.54'
+        }
+    };
+
+    let activeVariantKey = 'buy 1';
+
+    // ── Top page price discount ──────────────────────────────
+    function applyTopPriceDiscount() {
+    // Target ONLY the price inside .price__regular (not the strikethrough one in .price__sale)
+    const priceEl = document.querySelector('.price__regular .price-item--regular');
+    if (!priceEl) return;
+
+    const prices = STATIC[activeVariantKey];
+
+    // Remove old injected elements
+    document.querySelector('.discounted-top-price')?.remove();
+    document.querySelector('.original-top-price-strike')?.remove();
+
+    // Style original as strikethrough
+    priceEl.style.cssText = 'text-decoration:line-through; color:#999; font-size:0.9em; display:inline;';
+
+    // Inject discounted price right after
+    priceEl.insertAdjacentHTML('afterend', `
+        <span class="discounted-top-price" style="font-family:'Inter',sans-serif;font-weight:700;color:#215B32;font-size:1.1em;margin-left:6px;">
+            ${prices.discountedPrice}
+        </span>
+    `);
+}
+
+    // ── Click: select full Skio card ────────────────────────
+    document.addEventListener('click', (e) => {
+        const container = e.target.closest('.skio-group-container');
+        if (container) {
+            const radio = container.querySelector('input[type="radio"]');
+            if (radio) {
+                radio.checked = true;
+                radio.dispatchEvent(new Event('change', { bubbles: true }));
+                radio.dispatchEvent(new Event('input', { bubbles: true }));
+            }
+        }
+    });
+
+    // ── Skio prices ─────────────────────────────────────────
+    function updatePrices() {
+        const prices = STATIC[activeVariantKey];
+
+        const subPriceContainer = document.querySelector('[skio-subscription-price]')?.closest('.skio-price');
+        const otPriceContainer = document.querySelector('[skio-onetime-price]')?.closest('.skio-price');
+
+        function inject(container, compareVal, dailyVal) {
+            if (!container) return;
+            container.querySelector('.fake-compare-price')?.remove();
+            container.querySelector('.dynamic-daily-price')?.remove();
+
+            const priceSpan = container.querySelector('[skio-subscription-price], [skio-onetime-price]');
+            if (!priceSpan) return;
+
+            container.style.cssText = 'display:flex;flex-wrap:wrap;justify-content:flex-end;align-items:center;';
+            priceSpan.insertAdjacentHTML('afterend', `
+                <span class="fake-compare-price" style="font-family:'Sofia Sans',sans-serif;color:#e53e3e;text-decoration:line-through;font-size:14px;margin-left:6px;font-weight:500;">${compareVal}</span>
+                <div class="dynamic-daily-price" style="flex-basis:100%;font-size:11px;font-weight:400;color:#333;margin-top:2px;text-align:right;">${dailyVal}</div>
+            `);
+        }
+
+        inject(subPriceContainer, prices.compareAt, prices.subDaily);
+        inject(otPriceContainer, prices.compareAt, prices.otDaily);
+
+        applyTopPriceDiscount();
+    }
+
+    // ── Benefits + header injection ─────────────────────────
+    function injectBenefits() {
+        const skioContainer = document.querySelector('.skio-plan-picker');
+        if (!skioContainer) return;
+
+        const root = skioContainer;
+        const subInput = root.querySelector('input[value="subscription"], input[data-type="subscription"]')
+            || root.querySelector('.skio-group-container:first-of-type input');
+        const subLabel = subInput
+            ? subInput.closest('.skio-group-container')
+            : root.querySelector('.skio-group-container:first-of-type');
+
+        const badgeSVG = `<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24"><path d="M3.85 8.62a4 4 0 0 1 4.78-4.77 4 4 0 0 1 6.74 0 4 4 0 0 1 4.78 4.78 4 4 0 0 1 0 6.74 4 4 0 0 1-4.77 4.78 4 4 0 0 1-6.75 0 4 4 0 0 1-4.78-4.77 4 4 0 0 1 0-6.76Z" fill="white"/><path d="m9 12 2 2 4-4" stroke="#215B32" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>`;
+
+        if (subLabel && !subLabel.querySelector('.skio-custom-header')) {
+            subLabel.insertAdjacentHTML('afterbegin', `<div class="skio-custom-header">${badgeSVG} Limited Time Discount Auto-Applied</div>`);
+        }
+
+        if (subLabel && !subLabel.querySelector('.custom-skio-benefits')) {
+            const checkIcon = `<svg width="256px" height="256px" viewBox="0 0 26.00 30.00" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path d="M4.89163 13.2687L9.16582 17.5427L18.7085 8" stroke="#000000" stroke-width="1.3679999999999999" stroke-linecap="round" stroke-linejoin="round"></path></g></svg>`;
+            subLabel.insertAdjacentHTML('beforeend', `
+                <ul class="custom-skio-benefits">
+                    <li>${checkIcon} Free shipping on all orders</li>
+                    <li>${checkIcon} Pause or cancel anytime</li>
+                    <li>${checkIcon} 90-day money back guarantee</li>
+                    <li>${checkIcon} Free Lymphatic Massage E-book</li>
+                    <li>${checkIcon} 38% OFF all future shipments</li>
+                </ul>
+            `);
+        }
+    }
+
+    // ── MutationObserver on price spans ─────────────────────
+    function startObserver() {
+        const subSpan = document.querySelector('[skio-subscription-price]');
+        const otSpan = document.querySelector('[skio-onetime-price]');
+        if (!subSpan && !otSpan) return;
+
+        const observer = new MutationObserver(() => {
+            updatePrices();
+        });
+
+        if (subSpan) observer.observe(subSpan, { childList: true, characterData: true, subtree: true });
+        if (otSpan) observer.observe(otSpan, { childList: true, characterData: true, subtree: true });
+    }
+
+    // ── Variant label click tracking ────────────────────────
+    document.addEventListener('click', (e) => {
+        const label = e.target.closest('label');
+        if (label) {
+            const text = label.innerText.trim().toLowerCase();
+            if (text.includes('buy 2')) activeVariantKey = 'buy 2 get 1 free';
+            else if (text.includes('buy 1')) activeVariantKey = 'buy 1';
+        }
+        setTimeout(applyTopPriceDiscount, 300);
+    });
+
+    // ── Init ────────────────────────────────────────────────
+    const skioInterval = setInterval(() => {
+        const skioContainer = document.querySelector('.skio-plan-picker');
+        if (skioContainer && document.querySelector('[skio-subscription-price]')) {
+            injectBenefits();
+            updatePrices();
+            startObserver();
+            clearInterval(skioInterval);
+        }
+    }, 300);
+
+    // Top price — poll separately as it may load before Skio
+    const priceInterval = setInterval(() => {
+        if (document.querySelector('.price-item--regular')) {
+            applyTopPriceDiscount();
+            clearInterval(priceInterval);
+        }
+    }, 300);
+</script> 
